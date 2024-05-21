@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
-const productRoutes = require('./src/routes/products');
+// const productRoutes = require('./src/routes/products');
+const authRoutes = require('./src/routes/auth');
+const itemRoutes = require('./src/routes/items');
 
 app.use(bodyParser.json())
 
@@ -13,6 +16,20 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/', productRoutes);
+// app.use('/', productRoutes);
+app.use('/auth', authRoutes);
+app.use('/item', itemRoutes);
 
-app.listen(4000);
+app.use((error, req, res, next) => {
+    const status = error.errosStatus || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({message: message, data: data});
+})
+
+mongoose.connect('mongodb+srv://raditya:8jVqpZv5mkoNYgIc@rfid-api.lzm4hke.mongodb.net/?retryWrites=true&w=majority&appName=rfid-api')
+.then(() => {
+    app.listen(4000, () => console.log('connection success'));
+})
+.catch(err => console.log(err));
+
