@@ -32,16 +32,42 @@ exports.createItems = (req, res, next) => {
 }
 
 exports.getAllItemPost = (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage = req.query.perPage || 5;
+    let totalItems;
+
     ItemPost.find()
+    .countDocuments()
+    .then(count => {
+        totalItems = count;
+        return ItemPost.find()
+        .skip((parseInt(currentPage) - 1) * parseInt(perPage))
+        .limit(parseInt(perPage));
+    })
     .then(result => {
         res.status(200).json({
             message: "Berhasil memanggil data",
-            data: result
+            data: result,
+            total_data: totalItems,
+            per_page: parseInt(perPage),
+            current_page: parseInt(currentPage)
         })
     })
     .catch(err => {
         next(err);
     })
+
+
+    // ItemPost.find()
+    // .then(result => {
+    //     res.status(200).json({
+    //         message: "Berhasil memanggil data",
+    //         data: result
+    //     })
+    // })
+    // .catch(err => {
+    //     next(err);
+    // })
 }
 
 exports.getAllItemById = (req, res, next) => {
