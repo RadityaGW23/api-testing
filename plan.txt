@@ -1,7 +1,0 @@
-Standar API
-
-{root.app}/
-SAMPLE:
-
-
-Authentication
