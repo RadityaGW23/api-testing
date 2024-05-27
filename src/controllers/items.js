@@ -12,10 +12,12 @@ exports.createItems = (req, res, next) => {
     }
 
     const name = req.body.name;
+    const sn = req.body.sn;
     const location = req.body.location;
 
     const Posting = new ItemPost({
         name: name,
+        sn: sn,
         location: location
     })
 
@@ -100,6 +102,7 @@ exports.updateItemPost = (req, res, next) => {
     }
 
     const name = req.body.name;
+    const sn = req.body.sn;
     const location = req.body.location;
     const postId = req.params.postId;
 
@@ -112,6 +115,7 @@ exports.updateItemPost = (req, res, next) => {
         }
 
         post.name = name;
+        post.sn = sn;
         post.location = location;
 
         return post.save();

@@ -6,6 +6,10 @@ const ItemPost = new Schema({
         type: String,
         require: true,
     },
+    sn: {
+        type: Number,
+        require: true,
+    },
     location:{
         type: String,
         require: true,
